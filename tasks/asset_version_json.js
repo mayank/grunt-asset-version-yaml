@@ -1,12 +1,7 @@
 /*
- * grunt-asset-version-json
- * https://github.com/andyford/grunt-asset-version-json
+ * grunt-asset-version-yaml
+ * https://github.com/mayank/grunt-asset-version-yaml
  *
- * Based on:
- * https://github.com/hariadi/grunt-assets-wp
- *
- * Copyright (c) 2013 Andy Ford
- * Licensed under the MIT license.
  */
 
 'use strict';
@@ -17,7 +12,7 @@ var fs = require('fs')
 
 module.exports = function(grunt) {
 
-  grunt.registerMultiTask('asset_version_json', 'Rename assets files with hash and store hashes in a JSON file', function() {
+  grunt.registerMultiTask('asset_version_yaml', 'Rename assets files with hash and store hashes in a YAML file', function() {
 
     var dest = this.data.dest
       , options = this.options({
@@ -27,6 +22,10 @@ module.exports = function(grunt) {
           length: 4,
           rename: false
         });
+
+    var jsfiles = ['js'];
+    var cssfiles = ['css'];
+    var imgfiles = ['png','jpg','gif','bmp'];
 
     this.files.forEach(function(files) {
 
@@ -60,7 +59,7 @@ module.exports = function(grunt) {
         }
         grunt.log.writeln('  ' + file.grey + (' changed to ') + newName.green);
 
-        // Write new hashes to revs/hashes tracking JSON file
+        // Write new hashes to revs/hashes tracking YAML file
         jsoncontent = grunt.file.readJSON(dest);
         jsoncontent[file] = suffix;
         grunt.file.write(dest, JSON.stringify(jsoncontent, null, 2));
