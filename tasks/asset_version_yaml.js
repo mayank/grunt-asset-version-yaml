@@ -8,7 +8,8 @@
 
 var fs = require('fs')
   , path = require('path')
-  , crypto = require('crypto');
+  , crypto = require('crypto')
+  , yaml = require('js-yaml');
 
 module.exports = function(grunt) {
 
@@ -22,10 +23,6 @@ module.exports = function(grunt) {
           length: 4,
           rename: false
         });
-
-    var jsfiles = ['js'];
-    var cssfiles = ['css'];
-    var imgfiles = ['png','jpg','gif','bmp'];
 
     this.files.forEach(function(files) {
 
@@ -43,7 +40,7 @@ module.exports = function(grunt) {
 
         var basename = path.basename
           , name = basename(file)
-          , content = grunt.file.read(file)
+          , content = yaml.load(file)
           , hash = crypto.createHash(options.algorithm).update(content, options.encoding).digest('hex')
           , jsoncontent
           , suffix = hash.slice(0, options.length)
@@ -62,7 +59,7 @@ module.exports = function(grunt) {
         // Write new hashes to revs/hashes tracking YAML file
         jsoncontent = grunt.file.readJSON(dest);
         jsoncontent[file] = suffix;
-        grunt.file.write(dest, JSON.stringify(jsoncontent, null, 2));
+        yaml.dump(JSON.stringify(jsoncontent, null, 2));
         grunt.log.writeln('  ' + dest.grey + (' updated hash: ') + suffix.green);
       });
     });
