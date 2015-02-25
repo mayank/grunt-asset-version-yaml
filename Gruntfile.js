@@ -29,7 +29,7 @@ module.exports = function(grunt) {
     },
 
     // Configuration to be run (and then tested).
-    asset_version_json: {
+    asset_version_yaml: {
       default_options: {
         options: {
         },
